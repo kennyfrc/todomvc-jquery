@@ -186,6 +186,13 @@ jQuery(function ($) {
 
 			this.render();
 		},
+    // e is a jQuery object 
+    /* jQuery is mainly used to make it easier to do HTML document traversal and manipulation, 
+    / event handling, animation, and Ajax much simpler with an easy-to-use API.
+    / grabs the index from the element
+    / removes it from the array via splice
+    / renders
+    */
 		destroy: function (e) {
 			this.todos.splice(this.indexFromEl(e.target), 1);
 			this.render();
