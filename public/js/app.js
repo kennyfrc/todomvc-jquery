@@ -52,7 +52,9 @@ jQuery(function ($) {
 				}.bind(this)
 			}).init('/all');      
 		},
+    // callbacks or event handlers
 		bindEvents: function () {
+      // here, you're passing the jquery object $('#new-todo') on the this.create method
 			$('#new-todo').on('keyup', this.create.bind(this));
 			$('#toggle-all').on('change', this.toggleAll.bind(this));
 			$('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
@@ -70,7 +72,7 @@ jQuery(function ($) {
 			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
 			$('#new-todo').focus();
-			util.store('todos-jquery', this.todos);
+			util.store('todos-jquery', this.todos);321`
 		},
 		renderFooter: function () {
 			var todoCount = this.todos.length;
@@ -84,13 +86,16 @@ jQuery(function ($) {
 
 			$('#footer').toggle(todoCount > 0).html(template);
 		},
+    // returns true or false on whether or not the checkbox is checked (after click)
 		toggleAll: function (e) {
+      // value of a property for the first element in the set of matched elements or set one or more properties for every matched element.
+      // could be true or false
 			var isChecked = $(e.target).prop('checked');
-
+      // assign the result to each one
 			this.todos.forEach(function (todo) {
 				todo.completed = isChecked;
 			});
-
+      // render the result to the page
 			this.render();
 		},
 		getActiveTodos: function () {
@@ -125,29 +130,36 @@ jQuery(function ($) {
 			var id = $(el).closest('li').data('id');
 			var todos = this.todos;
 			var i = todos.length;
-
+    // work backwards in an array until you bump into the value u want to find
 			while (i--) {
 				if (todos[i].id === id) {
 					return i;
 				}
 			}
 		},
+    // this takes a jQuery object
 		create: function (e) {
+      // .target just gets the DOM element that initiatied the event
+      // $() turns it into a jQuery object you can run methods on. 
+      // this is preferrable to just passing it because it keeps your code 'safe'
 			var $input = $(e.target);
+      // gets value of the input them trims it
 			var val = $input.val().trim();
-
+      
+      // this ensures that the succeeding code only triggers
+      // if enter is pushed via .which or .key
 			if (e.which !== ENTER_KEY || !val) {
 				return;
 			}
-
+      // pushes the value into the todos data structure
 			this.todos.push({
 				id: util.uuid(),
 				title: val,
 				completed: false
 			});
-
+      // resets val back
 			$input.val('');
-
+      // renders it
 			this.render();
 		},
 		toggle: function (e) {
@@ -198,6 +210,7 @@ jQuery(function ($) {
 			this.render();
 		}
 	};
-
+  
+  // invoke before the end of the jQuery ready "capsule"
 	App.init();
 });

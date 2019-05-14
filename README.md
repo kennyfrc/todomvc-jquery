@@ -8,3 +8,7 @@
 
 ### DONE:
 * Comments on destroy
+* Comments on create
+* indexFromEl
+* bindEvents
+* toggle all (partly)
