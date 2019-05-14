@@ -39,12 +39,16 @@ jQuery(function ($) {
 	};
 
 	var App = {
+    // initialize local storage, todotemplate, footer template, and 
+    // initialize event handlers
+    // pass the handlebars templates that will be dynamically rendered. grab it
+    // via jquery, turn it into html, then pass it to the Handlebars compiler
 		init: function () {
 			this.todos = util.store('todos-jquery');
 			this.todoTemplate = Handlebars.compile($('#todo-template').html());
 			this.footerTemplate = Handlebars.compile($('#footer-template').html());
 			this.bindEvents();
-
+      // the colon turns the path into a variable
       new Router({
 				'/:filter': function (filter) {
 					this.filter = filter;
@@ -65,13 +69,24 @@ jQuery(function ($) {
 				.on('focusout', '.edit', this.update.bind(this))
 				.on('click', '.destroy', this.destroy.bind(this));
 		},
+    // get array filter status via router
+    // renders todolist
+    // hides or shows the main
+    // toggle all is checked or not based on activeTodos
+    // render footer
+    // focus
+    // store at local storage
 		render: function () {
 			var todos = this.getFilteredTodos();
 			$('#todo-list').html(this.todoTemplate(todos));
 			$('#main').toggle(todos.length > 0);
+      // you can use a function to set properties
+      // if there are no non-complete todos, add the checked property to toggle-all
 			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
 			this.renderFooter();
+      // focus on the input area
 			$('#new-todo').focus();
+      // local storage
 			util.store('todos-jquery', this.todos);
 		},
 		renderFooter: function () {
@@ -98,16 +113,20 @@ jQuery(function ($) {
       // render the result to the page
 			this.render();
 		},
+    // returns non-complete todos
 		getActiveTodos: function () {
 			return this.todos.filter(function (todo) {
 				return !todo.completed;
 			});
 		},
+    // returns completed todos
 		getCompletedTodos: function () {
 			return this.todos.filter(function (todo) {
 				return todo.completed;
 			});
 		},
+    // get status of filter in the router
+    // then return the correct filtered array
 		getFilteredTodos: function () {
 			if (this.filter === 'active') {
 				return this.getActiveTodos();
@@ -119,6 +138,7 @@ jQuery(function ($) {
 
 			return this.todos;
 		},
+    // get all non-complete, set filter all, render it (you're not really deleting stuff here)
 		destroyCompleted: function () {
 			this.todos = this.getActiveTodos();
 			this.filter = 'all';

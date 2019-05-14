@@ -11,4 +11,12 @@
 * Comments on create
 * indexFromEl
 * bindEvents
-* toggle all (partly)
+* toggle all 
+* render
+* some init notes
+* render footer (partly)
+
+
+### TO RESEARCH:
+* localStorage
+* routers
