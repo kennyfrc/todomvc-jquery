@@ -14,9 +14,12 @@
 * toggle all 
 * render
 * some init notes
-* render footer (partly)
-
+* render footer 
+* edit
+* update
+* toggle
+* local storage
 
 ### TO RESEARCH:
-* localStorage
-* routers
+* routers (directorjs)
+* uuid

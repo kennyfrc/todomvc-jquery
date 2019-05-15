@@ -1,4 +1,7 @@
 /*global jQuery, Handlebars, Router */
+/* key notes:
+/ e is a jQuery object mostly
+*/
 jQuery(function ($) {
 	'use strict';
 
@@ -28,18 +31,31 @@ jQuery(function ($) {
 		pluralize: function (count, word) {
 			return count === 1 ? word : word + 's';
 		},
+    /* local storage is a way for you to save data on the browser
+    / it will persist even if you close your browser (with no expiration date)
+    / if there's new data, then store it. if there's no data, then just return it
+    / JSON.stringify converts an object or anything into JSON
+    / if storage exists, 
+    / JSON.parse parses a JSON string, constructing the JavaScript value or object described by the string
+    / return the JSON.parse(store) if it's being called with just the todos
+    / 
+    */ 
 		store: function (namespace, data) {
 			if (arguments.length > 1) {
-				return localStorage.setItem(namespace, JSON.stringify(data));
+        // removed return as it pasn't needed (as you're just setting values)
+				localStorage.setItem(namespace, JSON.stringify(data));
 			} else {
+        // must keep return as you're passing values
 				var store = localStorage.getItem(namespace);
+        // the && will return the rightside value if both are true
+        // will evaluate as false if store is falsy
 				return (store && JSON.parse(store)) || [];
 			}
 		}
 	};
 
 	var App = {
-    // initialize local storage, todotemplate, footer template, and 
+    // initialize local storage namespace (i.e. if there was something saved before), todotemplate, footer template, and 
     // initialize event handlers
     // pass the handlebars templates that will be dynamically rendered. grab it
     // via jquery, turn it into html, then pass it to the Handlebars compiler
@@ -89,6 +105,9 @@ jQuery(function ($) {
       // local storage
 			util.store('todos-jquery', this.todos);
 		},
+    /* initialize the length, pending todos, and render
+    / the template
+    */
 		renderFooter: function () {
 			var todoCount = this.todos.length;
 			var activeTodoCount = this.getActiveTodos().length;
@@ -114,12 +133,14 @@ jQuery(function ($) {
 			this.render();
 		},
     // returns non-complete todos
+    // double return as we're passing data
 		getActiveTodos: function () {
 			return this.todos.filter(function (todo) {
 				return !todo.completed;
 			});
 		},
     // returns completed todos
+    // double return as we're passing data
 		getCompletedTodos: function () {
 			return this.todos.filter(function (todo) {
 				return todo.completed;
@@ -182,15 +203,31 @@ jQuery(function ($) {
       // renders it
 			this.render();
 		},
+    /* gets the index, then toggles the 'complete' status of 
+    / a todo as on or off
+    / then renders it
+    */ 
 		toggle: function (e) {
 			var i = this.indexFromEl(e.target);
 			this.todos[i].completed = !this.todos[i].completed;
 			this.render();
 		},
+    /* 
+    / get DOM, convert to jQuery object, switch to the closest node that uses the li element
+    / add a class to the li to show an effect
+    / switch to a node that has edit as the selector
+    / invoke the input val, e.g. "test" and make it the focus
+    */
 		edit: function (e) {
 			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
 			$input.val($input.val()).focus();
 		},
+    /* just keyboard interactions
+    / upon enter, remove the keyboard focus (blur)
+    / upon escape
+    / the data here is used as a javascript method, instead of a jquery method (just initialization)
+    / remove the keyboard focus
+    */
 		editKeyup: function (e) {
 			if (e.which === ENTER_KEY) {
 				e.target.blur();
@@ -200,6 +237,12 @@ jQuery(function ($) {
 				$(e.target).data('abort', true).blur();
 			}
 		},
+    /* if empty value, then destroy it
+    / if abort is true, then toggle it off and don't add or create anything
+    / else, assign the value to the index
+    / it doesn't invoke the create function as it's on a li and not on an input
+    / the update assigns the value to the todos straight
+    */
 		update: function (e) {
 			var el = e.target;
 			var $el = $(el);
