@@ -11,4 +11,15 @@
 * Comments on create
 * indexFromEl
 * bindEvents
-* toggle all (partly)
+* toggle all 
+* render
+* some init notes
+* render footer 
+* edit
+* update
+* toggle
+* local storage
+
+### TO RESEARCH:
+* routers (directorjs)
+* uuid
