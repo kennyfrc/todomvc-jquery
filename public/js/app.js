@@ -13,6 +13,7 @@ jQuery(function ($) {
 	var ESCAPE_KEY = 27;
 
 	var util = {
+    // A UUID (Universal Unique Identifier) is a 128-bit number used to uniquely identify some object or entity on the Internet
 		uuid: function () {
 			/*jshint bitwise:false */
 			var i, random;
