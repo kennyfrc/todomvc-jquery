@@ -26,7 +26,8 @@
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
 		<script id="todo-template" type="text/x-handlebars-template">
-			{{#this}}
+			<!-- we put `this` here because we passed the data structure / object -->>
+      {{#this}}
 			<li {{#if completed}}class="completed"{{/if}} data-id="{{id}}">
 				<div class="view">
 					<input class="toggle" type="checkbox" {{#if completed}}checked{{/if}}>

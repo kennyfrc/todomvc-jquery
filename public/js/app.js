@@ -4,7 +4,7 @@
 */
 jQuery(function ($) {
 	'use strict';
-
+  // register a helper that will have buttons that change the url
 	Handlebars.registerHelper('eq', function (a, b, options) {
 		return a === b ? options.fn(this) : options.inverse(this);
 	});
@@ -66,6 +66,10 @@ jQuery(function ($) {
 			this.footerTemplate = Handlebars.compile($('#footer-template').html());
 			this.bindEvents();
       // the colon turns the path into a variable
+      // routers just help determine what code to run given the URL
+      // everytime render() runs, it invokes getFilteredtodos which checks for the filter status
+      // upon initialization, start with all
+      // bind the app for the filter (not router)
       new Router({
 				'/:filter': function (filter) {
 					this.filter = filter;
@@ -106,7 +110,7 @@ jQuery(function ($) {
       // local storage
 			util.store('todos-jquery', this.todos);
 		},
-    /* initialize the length, pending todos, and render
+    /* initialize the length, pending todos, and render, and set filter
     / the template
     */
 		renderFooter: function () {
