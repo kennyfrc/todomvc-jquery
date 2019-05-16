@@ -66,6 +66,10 @@ jQuery(function ($) {
 			this.footerTemplate = Handlebars.compile($('#footer-template').html());
 			this.bindEvents();
       // the colon turns the path into a variable
+      // routers just help determine what code to run given the URL
+      // everytime render() runs, it invokes getFilteredtodos which checks for the filter status
+      // upon initialization, start with all
+      // bind the app for the filter (not router)
       new Router({
 				'/:filter': function (filter) {
 					this.filter = filter;
